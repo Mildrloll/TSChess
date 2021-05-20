@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>JSChess</title>
-		<script type="text/javascript"> if (!window.console) console = {log: function() {}}; </script>
-	</head>
-	<body>
-		<header>
-			<h3>JS Chess</h3>			
-		</header>	
-		<div id="FenInDiv">
-			Fen:<br/>
-			<input type="text" id="fenIn"/>		
-			<button type="button" id="SetFen">Set Position</button>	
-		</div>
-        <script src="dist/defs.js"></script>
-        <script src="dist/board.js"></script>
-		<script src="dist/main.js"></script>
-	</body>
+
+<head>
+	<meta charset="utf-8">
+	<title>TSChess</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript"> if (!window.console) console = { log: function () { } };</script>
+</head>
+
+<body>
+	<header>
+		<h3>TS Chess</h3>
+	</header>
+	<div id="FenInDiv">
+		Fen:<br />
+		<input type="text" id="fenIn" />
+		<button onclick="SetFen()" type="button" id="SetFen">Set Position</button>
+	</div>
+	<script src="dist/defs.js"></script>
+	<script src="dist/board.js"></script>
+	<script src="dist/gui.js"></script>
+	<script src="dist/main.js"></script>
+</body>
+
 </html>
