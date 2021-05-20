@@ -62,6 +62,14 @@ function GeneratePosKeys() {
     finalKey ^= CastleKeys[GameBoard.castlePerm];
     return finalKey;
 }
+function PrintPieceLists() {
+    let piece, pceNum;
+    for (piece = PIECES.wP; piece <= PIECES.bK; ++piece) {
+        for (pceNum = 0; pceNum < GameBoard.pecNum[piece]; ++pceNum) {
+            console.log('Piece ' + PecChar[piece] + ' on ' + PrSq(GameBoard.pList[PCEINDEX(piece, pceNum)]));
+        }
+    }
+}
 function UpdateListsMaterial() {
     let piece, sq, index, colour;
     for (index = 0; index < 14 * 120; ++index) {
@@ -83,6 +91,7 @@ function UpdateListsMaterial() {
             GameBoard.pecNum[piece]++;
         }
     }
+    PrintPieceLists();
 }
 function ResetBoard() {
     let index;
