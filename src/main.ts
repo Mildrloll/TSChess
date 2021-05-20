@@ -42,6 +42,7 @@ function init() {
     console.log("init() called");
     InitFileSRanksBrd();
     InitHashKeys();
+    InitSq120To64();
 }
 init();
 console.log("Main Init Called");

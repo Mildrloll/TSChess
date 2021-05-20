@@ -123,3 +123,6 @@ function SQ64(sq120) {
 function SQ120(sq64) {
     return Sq64To120[(sq64)];
 }
+function PECINDEX(pce, pceNum) {
+    return (pce * 10 + pceNum);
+}

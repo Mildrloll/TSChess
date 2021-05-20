@@ -62,14 +62,8 @@ function GeneratePosKeys() {
     finalKey ^= CastleKeys[GameBoard.castlePerm];
     return finalKey;
 }
-function ResetBoard() {
-    let index;
-    for (index = 0; index < BRD_SQ_NUM; ++index) {
-        GameBoard.pieces[index] = SQUARES.OFFBOARD;
-    }
-    for (index = 0; index < 64; ++index) {
-        GameBoard.pieces[SQ120(index)] = PIECES.EMPTY;
-    }
+function UpdateListsMaterial() {
+    let piece, sq, index, colour;
     for (index = 0; index < 14 * 120; ++index) {
         GameBoard.pList[index] = PIECES.EMPTY;
     }
@@ -78,6 +72,25 @@ function ResetBoard() {
     }
     for (index = 0; index < 13; ++index) {
         GameBoard.pecNum[index] = 0;
+    }
+    for (index = 0; index < 64; ++index) {
+        sq = SQ120(index);
+        piece = GameBoard.pieces[sq];
+        if (piece != PIECES.EMPTY) {
+            colour = PieceCol[piece];
+            GameBoard.marterial[colour] += PieceVal[piece];
+            GameBoard.pList[PCEINDEX(piece, GameBoard.pecNum[piece])] = sq;
+            GameBoard.pecNum[piece]++;
+        }
+    }
+}
+function ResetBoard() {
+    let index;
+    for (index = 0; index < BRD_SQ_NUM; ++index) {
+        GameBoard.pieces[index] = SQUARES.OFFBOARD;
+    }
+    for (index = 0; index < 64; ++index) {
+        GameBoard.pieces[SQ120(index)] = PIECES.EMPTY;
     }
     GameBoard.side = COLOURS.WHITE;
     GameBoard.enPas = SQUARES.NO_SQ;
@@ -163,4 +176,5 @@ function ParseFen(fen: string) {
         GameBoard.enPas = FR2SQ(file, rank);
     }
     GameBoard.posKey = GeneratePosKeys();
+    UpdateListsMaterial();
 }
