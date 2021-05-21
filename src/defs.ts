@@ -51,3 +51,21 @@ function SQ120(sq64: number) {
 function PECINDEX(pce: number, pceNum: number) {
     return (pce * 10 + pceNum);
 }
+function FROMSQ(m: number) {
+    return (m & 0x7F);
+}
+function TOSQ(m: number) {
+    return ((m >> 7) & 0x7F);
+}
+function CAPTURED(m: number) {
+    return ((m >> 14) & 0xF);
+}
+function PROMOTED(m: number) {
+    return ((m >> 20) & 0xF);
+}
+const MFLAGEP = 0x40000;
+const MFLAGPS = 0x80000;
+const MFLAGCA = 0x100000;
+const MFLAGCAP = 0x7C000;
+const MFLAGPROM = 0xF00000;
+const NOMOVE = 0;
