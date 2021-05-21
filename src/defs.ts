@@ -34,6 +34,12 @@ const KnDir = [-8, -19, -21, -12, 8, 19, 21, 12];
 const RkDir = [-1, -10, 1, 10];
 const BiDir = [-9, -11, 11, 9];
 const KiDir = [-1, -10, 1, 10, -9, -11, 9, 11];
+const DirNum = [0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8];
+const PceDir: any = [0, 0, KnDir, BiDir, RkDir, KiDir, KiDir, 0, KnDir, BiDir, RkDir, KiDir, KiDir];
+const LoopNonSlidePce = [PIECES.wN, PIECES.wK, 0, PIECES.bN, PIECES.bK, 0];
+const LoopNonSlideIndex = [0, 3];
+const LoopSlidePce = [PIECES.wB, PIECES.wR, PIECES.wQ, 0, PIECES.bB, PIECES.bR, PIECES.bQ, 0];
+const LoopSlideIndex = [0, 4];
 const PieceKeys = new Array(14 * 120);
 let SideKey: number;
 const CastleKeys = new Array(16);
@@ -47,9 +53,6 @@ function SQ64(sq120: number) {
 }
 function SQ120(sq64: number) {
     return Sq64To120[(sq64)];
-}
-function PECINDEX(pce: number, pceNum: number) {
-    return (pce * 10 + pceNum);
 }
 function FROMSQ(m: number) {
     return (m & 0x7F);
@@ -69,3 +72,7 @@ const MFLAGCA = 0x100000;
 const MFLAGCAP = 0x7C000;
 const MFLAGPROM = 0xF00000;
 const NOMOVE = 0;
+function SQOFFBOARD(sq: number) {
+    if (FilesBrd[sq] == SQUARES.OFFBOARD) return BOOL.TRUE;
+    return BOOL.FALSE;
+}

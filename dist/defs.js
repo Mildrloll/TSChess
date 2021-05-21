@@ -113,6 +113,12 @@ var KnDir = [-8, -19, -21, -12, 8, 19, 21, 12];
 var RkDir = [-1, -10, 1, 10];
 var BiDir = [-9, -11, 11, 9];
 var KiDir = [-1, -10, 1, 10, -9, -11, 9, 11];
+var DirNum = [0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8];
+var PceDir = [0, 0, KnDir, BiDir, RkDir, KiDir, KiDir, 0, KnDir, BiDir, RkDir, KiDir, KiDir];
+var LoopNonSlidePce = [PIECES.wN, PIECES.wK, 0, PIECES.bN, PIECES.bK, 0];
+var LoopNonSlideIndex = [0, 3];
+var LoopSlidePce = [PIECES.wB, PIECES.wR, PIECES.wQ, 0, PIECES.bB, PIECES.bR, PIECES.bQ, 0];
+var LoopSlideIndex = [0, 4];
 var PieceKeys = new Array(14 * 120);
 var SideKey;
 var CastleKeys = new Array(16);
@@ -126,9 +132,6 @@ function SQ64(sq120) {
 }
 function SQ120(sq64) {
     return Sq64To120[(sq64)];
-}
-function PECINDEX(pce, pceNum) {
-    return (pce * 10 + pceNum);
 }
 function FROMSQ(m) {
     return (m & 0x7F);
@@ -148,3 +151,8 @@ var MFLAGCA = 0x100000;
 var MFLAGCAP = 0x7C000;
 var MFLAGPROM = 0xF00000;
 var NOMOVE = 0;
+function SQOFFBOARD(sq) {
+    if (FilesBrd[sq] == SQUARES.OFFBOARD)
+        return BOOL.TRUE;
+    return BOOL.FALSE;
+}
