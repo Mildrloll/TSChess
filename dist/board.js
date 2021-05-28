@@ -1,12 +1,10 @@
 "use strict";
-function PCEINDEX(pce, pecNum) {
-    return (pce * 10 + pecNum);
-}
-var GameBoard = { pieces: Array(0), side: 0, fiftyMove: 0, hisPly: 0, ply: 0, enPas: 0, castlePerm: 0, marterial: Array(0), pecNum: Array(0), pList: Array(0), posKey: 0, moveList: Array(0), moveScores: Array(0), moveListStart: Array(0) };
+var GameBoard = { pieces: Array(0), side: 0, fiftyMove: 0, hisPly: 0, history: Array(0), ply: 0, enPas: 0, castlePerm: 0, marterial: Array(0), pecNum: Array(0), pList: Array(0), posKey: 0, moveList: Array(0), moveScores: Array(0), moveListStart: Array(0) };
 GameBoard.pieces = new Array(BRD_SQ_NUM);
 GameBoard.side = COLOURS.WHITE;
 GameBoard.fiftyMove = 0;
 GameBoard.hisPly = 0;
+GameBoard.history = [];
 GameBoard.ply = 0;
 GameBoard.enPas = 0;
 GameBoard.castlePerm = 0;
@@ -17,6 +15,45 @@ GameBoard.posKey = 0;
 GameBoard.moveList = new Array(MAXDEPTH * MAXPOSITIONMOVES);
 GameBoard.moveScores = new Array(MAXDEPTH * MAXPOSITIONMOVES);
 GameBoard.moveListStart = new Array(MAXDEPTH);
+function CheckBoard() {
+    var t_pceNum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var t_material = [0, 0];
+    var sq64, t_piece, t_pce_num, sq120, colour, pcount;
+    for (t_piece = PIECES.wP; t_piece <= PIECES.bK; ++t_piece) {
+        for (t_pce_num = 0; t_pce_num < GameBoard.pecNum[t_piece]; ++t_pce_num) {
+            sq120 = GameBoard.pList[PCEINDEX(t_piece, t_pce_num)];
+            if (GameBoard.pieces[sq120] != t_piece) {
+                console.log('Error Pce Lists');
+                return BOOL.FALSE;
+            }
+        }
+    }
+    for (sq64 = 0; sq64 < 64; ++sq64) {
+        sq120 = SQ120(sq64);
+        t_piece = GameBoard.pieces[sq120];
+        t_pceNum[t_piece]++;
+        t_material[PieceCol[t_piece]] += PieceVal[t_piece];
+    }
+    for (t_piece = PIECES.wP; t_piece <= PIECES.bK; ++t_piece) {
+        if (t_pceNum[t_piece] != GameBoard.pecNum[t_piece]) {
+            console.log('Error t_pceNum');
+            return BOOL.FALSE;
+        }
+    }
+    if (t_material[COLOURS.WHITE] != GameBoard.marterial[COLOURS.WHITE] || t_material[COLOURS.BLACK] != GameBoard.marterial[COLOURS.BLACK]) {
+        console.log('Error t_material');
+        return BOOL.FALSE;
+    }
+    if (GameBoard.side != COLOURS.WHITE && GameBoard.side != COLOURS.BLACK) {
+        console.log('Error GameBoard.side');
+        return BOOL.FALSE;
+    }
+    if (GeneratePosKeys() != GameBoard.posKey) {
+        console.log('Error Gameboard.posKey');
+        return BOOL.FALSE;
+    }
+    return BOOL.TRUE;
+}
 function PrintBoard() {
     var sq, file, rank, piece;
     console.log("\nGame Board:\n");

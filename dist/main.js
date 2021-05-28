@@ -39,11 +39,18 @@ function InitSq120To64() {
         }
     }
 }
+function InitBoardVars() {
+    var index;
+    for (index = 0; index < MAXGAMEMOVES; ++index) {
+        GameBoard.history.push({ move: NOMOVE, castlePerm: 0, enPas: 0, fiftyMove: 0, posKey: 0 });
+    }
+}
 function init() {
     console.log("init() called");
     InitFileSRanksBrd();
     InitHashKeys();
     InitSq120To64();
+    InitBoardVars();
 }
 init();
 console.log("Main Init Called");
@@ -51,3 +58,8 @@ ParseFen(START_FEN);
 PrintBoard();
 GenerateMoves();
 PrintMoveList();
+PrintPieceLists();
+CheckBoard();
+MakeMove(GameBoard.moveList[0]);
+PrintBoard();
+CheckBoard();

@@ -10,6 +10,7 @@ function PrMove(move) {
     var rt = RanksBrd[TOSQ(move)];
     MvStr = FileChar[ff] + RankChar[rf] + FileChar[ft] + RankChar[rt];
     var promoted = PROMOTED(move);
+    console.log('promoted = ' + promoted);
     if (promoted != PIECES.EMPTY) {
         var pchar = 'q';
         if (PieceKnight[promoted] == BOOL.TRUE) {
@@ -28,9 +29,12 @@ function PrMove(move) {
 function PrintMoveList() {
     var index;
     var move;
+    var num = 1;
     console.log('MoveList:');
     for (index = GameBoard.moveListStart[GameBoard.ply]; index < GameBoard.moveListStart[GameBoard.ply + 1]; ++index) {
         move = GameBoard.moveList[index];
-        console.log(PrMove(move));
+        console.log('Move:' + num + ':' + PrMove(move));
+        num++;
     }
+    console.log('End MoveList');
 }

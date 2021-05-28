@@ -1,3 +1,4 @@
+
 function MOVE(from: number, to: number, captured: number, promoted: number, flag: number) {
     return (from | (to << 7) | (captured << 14) | (promoted << 20) | flag);
 }
@@ -33,7 +34,7 @@ function AddBlackPawnCaptureMove(from: number, to: number, cap: number) {
         AddCaptureMove(MOVE(from, to, cap, PIECES.EMPTY, 0));
     }
 }
-function AddWhitePawnQuiteMove(from: number, to: number) {
+function AddWhitePawnQuietMove(from: number, to: number) {
     if (RanksBrd[from] == RANKS.RANK_7) {
         AddQuietMove(MOVE(from, to, PIECES.EMPTY, PIECES.wQ, 0));
         AddQuietMove(MOVE(from, to, PIECES.EMPTY, PIECES.wR, 0));
@@ -43,7 +44,7 @@ function AddWhitePawnQuiteMove(from: number, to: number) {
         AddQuietMove(MOVE(from, to, PIECES.EMPTY, PIECES.EMPTY, 0));
     }
 }
-function AddBlackPawnQuiteMove(from: number, to: number) {
+function AddBlackPawnQuietMove(from: number, to: number) {
     if (RanksBrd[from] == RANKS.RANK_2) {
         AddQuietMove(MOVE(from, to, PIECES.EMPTY, PIECES.bQ, 0));
         AddQuietMove(MOVE(from, to, PIECES.EMPTY, PIECES.bR, 0));
@@ -59,7 +60,7 @@ function GenerateMoves() {
     let pceNum;
     let sq;
     let pceIndex;
-    let pce: number;
+    let pce;
     let t_sq;
     let dir;
     if (GameBoard.side == COLOURS.WHITE) {
@@ -67,7 +68,7 @@ function GenerateMoves() {
         for (pceNum = 0; pceNum < GameBoard.pecNum[pceType]; ++pceNum) {
             sq = GameBoard.pList[PCEINDEX(pceType, pceNum)];
             if (GameBoard.pieces[sq + 10] == PIECES.EMPTY) {
-                AddWhitePawnQuiteMove(sq, sq + 10);
+                AddWhitePawnQuietMove(sq, sq + 10);
                 if (RanksBrd[sq] == RANKS.RANK_2 && GameBoard.pieces[sq + 20] == PIECES.EMPTY) {
                     AddQuietMove(MOVE(sq, sq + 20, PIECES.EMPTY, PIECES.EMPTY, MFLAGPS));
                 }
@@ -106,7 +107,7 @@ function GenerateMoves() {
         for (pceNum = 0; pceNum < GameBoard.pecNum[pceType]; ++pceNum) {
             sq = GameBoard.pList[PCEINDEX(pceType, pceNum)];
             if (GameBoard.pieces[sq - 10] == PIECES.EMPTY) {
-                AddBlackPawnQuiteMove(sq, sq - 10);
+                AddBlackPawnQuietMove(sq, sq - 10);
                 if (RanksBrd[sq] == RANKS.RANK_7 && GameBoard.pieces[sq - 20] == PIECES.EMPTY) {
                     AddQuietMove(MOVE(sq, sq - 20, PIECES.EMPTY, PIECES.EMPTY, MFLAGPS));
                 }
@@ -115,7 +116,7 @@ function GenerateMoves() {
                 AddBlackPawnCaptureMove(sq, sq - 9, GameBoard.pieces[sq - 9]);
             }
             if (SQOFFBOARD(sq - 11) == BOOL.FALSE && PieceCol[GameBoard.pieces[sq - 11]] == COLOURS.WHITE) {
-                AddBlackPawnCaptureMove(sq, sq - 11, GameBoard.pieces[sq - 9]);
+                AddBlackPawnCaptureMove(sq, sq - 11, GameBoard.pieces[sq - 11]);
             }
             if (GameBoard.enPas != SQUARES.NO_SQ) {
                 if (sq - 9 == GameBoard.enPas) {
@@ -146,7 +147,7 @@ function GenerateMoves() {
     while (pce != 0) {
         for (pceNum = 0; pceNum < GameBoard.pecNum[pce]; ++pceNum) {
             sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
-            for (let index: number = 0; index < DirNum[pce]; index++) {
+            for (let index = 0; index < DirNum[pce]; index++) {
                 dir = PceDir[pce][index];
                 t_sq = sq + dir;
                 if (SQOFFBOARD(t_sq) == BOOL.TRUE) {
@@ -163,12 +164,12 @@ function GenerateMoves() {
         }
         pce = LoopNonSlidePce[pceIndex++];
     }
-    pceIndex = LoopSlidePce[GameBoard.side];
-    pce = LoopSlideIndex[pceIndex++];
+    pceIndex = LoopSlideIndex[GameBoard.side];
+    pce = LoopSlidePce[pceIndex++];
     while (pce != 0) {
         for (pceNum = 0; pceNum < GameBoard.pecNum[pce]; ++pceNum) {
             sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
-            for (let index: number = 0; index < DirNum[pce]; index++) {
+            for (let index = 0; index < DirNum[pce]; index++) {
                 dir = PceDir[pce][index];
                 t_sq = sq + dir;
                 while (SQOFFBOARD(t_sq) == BOOL.FALSE) {
@@ -183,6 +184,6 @@ function GenerateMoves() {
                 }
             }
         }
-        pce = LoopNonSlidePce[pceIndex++];
+        pce = LoopSlidePce[pceIndex++];
     }
 }
